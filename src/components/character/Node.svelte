@@ -1,12 +1,16 @@
-<script>
+<script lang="ts">
   // import { characterData } from "../../universeData";
-  import { type } from "./TypeManager";
+  // import { type } from "./TypeManager";
+  import { nodeType } from "./type/NodeManager";
 
   import Conditional from "./Conditional.svelte";
+  import type { node } from "../../layouts/templateTypes";
 
-  export let node;
+  export let node: node;
   export let nodeData;
   export let characterData;
+
+  let n = nodeType(node.type);
 </script>
 
 <!-- <svelte:component
@@ -36,9 +40,10 @@
   </Conditional> -->
 
 <svelte:component
-  this={type[node.type]}
+  this={n.node}
   {nodeData}
   {node}
   {characterData}
+  nodeProps={n.nodeProps}
   on:edit
 />

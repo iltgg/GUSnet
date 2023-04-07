@@ -2,6 +2,7 @@
   import { userData, addUniverse as au } from "../userData";
 
   let universe = "";
+  let password = "";
   let error = "";
 
   async function addUniverse() {
@@ -21,11 +22,14 @@
   <div class="grid">
     <div class="one">
       <h2>Universes:</h2>
-      {#if $userData.universes}
-        {#each Object.keys($userData.universes) as uni (uni)}
-          <a href={`#/universe/${uni}`}>{$userData.universes[uni].name}</a>
-        {/each}
-      {/if}
+      <div class="universes">
+        <a href="#/universe/DEV">DEV</a>
+        {#if $userData.universes}
+          {#each Object.keys($userData.universes) as uni (uni)}
+            <a href={`#/universe/${uni}`}>{$userData.universes[uni].name}</a>
+          {/each}
+        {/if}
+      </div>
 
       <h3>Add Universe:</h3>
       <form on:submit|preventDefault={addUniverse}>
@@ -35,6 +39,12 @@
           name="add-universe"
           bind:value={universe}
         /><br />
+        <input
+          type="text"
+          placeholder="universe password"
+          name="add-universe"
+          bind:value={password}
+        /><br />
         <input type="submit" value="Add Universe" />
       </form>
       {#if error !== ""}
@@ -42,11 +52,21 @@
       {/if}
     </div>
     <div class="two">
-      <h2>News</h2>
-      Release 0.1:
+      <h2>News:</h2>
+      Release α.1:
       <ul>
         <li>Updates coming soon™</li>
       </ul>
     </div>
   </div>
 </article>
+
+<style lang="scss">
+  .universes {
+    display: flex;
+    flex-direction: column;
+    a {
+      margin-top: 1em;
+    }
+  }
+</style>

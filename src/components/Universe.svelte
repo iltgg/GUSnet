@@ -27,7 +27,8 @@
   let unsubscribe = [];
 
   onMount(async () => {
-    unsubscribe = await loadUniverse(params.universeId);
+    if (params.universeId !== "DEV")
+      unsubscribe = await loadUniverse(params.universeId);
   });
 
   onDestroy(() => {
@@ -207,13 +208,15 @@
       {/each}
     {/key}
     <!-- DEV -->
-    <div class="character">
-      <Character
-        characterId={777}
-        universeId={$universeData.id}
-        characterData={dev}
-        edit={true}
-      />
-    </div>
+    {#if params.universeId === "DEV"}
+      <div class="character">
+        <Character
+          characterId={777}
+          universeId={$universeData.id}
+          characterData={dev}
+          edit={true}
+        />
+      </div>
+    {/if}
   </div>
 </article>

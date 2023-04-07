@@ -29,7 +29,7 @@ const CONVERTERS = {
     if (a > 0) {
       return `+${a}`;
     }
-    return `-${a}`;
+    return `${a}`;
   },
 };
 
@@ -53,7 +53,7 @@ enum op {
   Return,
 }
 
-class Calculator {
+export class Calculator {
   private e: calculationGroup[];
   private store;
 
@@ -147,9 +147,10 @@ class Calculator {
   }
 
   private getFromDB(key: string) {
-    return this.getPath(key, this.store);
+    // console.log(this.store)
+    return this.getPath(key, this.store[0]);
   }
   private getPath(path: string, characterData): any {
-    return path.split(".").reduce((obj, next) => obj[next], characterData.data);
+    return path.split(".").reduce((obj, next) => obj[next], characterData);
   }
 }

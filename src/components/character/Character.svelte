@@ -16,11 +16,30 @@
   let status = null;
 
   function sendUpdate() {
-    updateCharacter(universeId, characterId, updateStack);
-    // $characterData.characters[characterId].data.name = updateStack["data.name"];
-    // need a way to test in dev
+    // updateCharacter(universeId, characterId, updateStack);
+
     // also maybe refactor the characterData to use a object of stores rather than a store?
-    
+    // DEV
+    Object.keys(updateStack).forEach((data) => {
+      let full = $characterData;
+      let ref = full.characters[characterId];
+      let split = data.split(".");
+      let final = split[split.length - 1];
+
+      split.pop();
+
+      ref = split.reduce(
+        (obj, next) => obj[next],
+        $characterData.characters[characterId]
+      );
+
+      // console.log(ref, split, final);
+      ref[final] = updateStack[data];
+
+      characterData.set(full);
+    });
+    // DEV
+
     console.log(updateStack);
     updateStack = {};
     window.onbeforeunload = undefined;
@@ -29,6 +48,29 @@
 
   function debounceUpdate(event) {
     updateStack["data." + event.detail.dataName] = event.detail.data;
+
+    // Questionable code, but the idea is sound
+    // Since no longer directly modifying store in fields want to update in debounce update
+    // so watchers can leverage data immediately rather than wait for update.
+    let data = "data." + event.detail.dataName;
+    let full = $characterData;
+    let ref = full.characters[characterId];
+    let split = data.split(".");
+    let final = split[split.length - 1];
+
+    split.pop();
+
+    ref = split.reduce(
+      (obj, next) => obj[next],
+      $characterData.characters[characterId]
+    );
+
+    // console.log(ref, split, final);
+    ref[final] = updateStack[data];
+
+    characterData.set(full);
+    // end sketchy code
+
     status = false;
     window.onbeforeunload = function () {
       return "you have unsaved changes";

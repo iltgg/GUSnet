@@ -1,13 +1,17 @@
-<script>
-    import { createEventDispatcher, onMount } from "svelte";
-  
-    export let nodeData;
-    export let props;
-    export let characterData;
-  
-  </script>
-  
-  <div class={"type label " + props.style}>
-    {props.label}
-  </div>
-  
+<script lang="ts">
+  export let nodeData;
+  export let node;
+  export let characterData;
+
+  export let nodeProps;
+</script>
+
+<div
+  class={"field label" +
+    (node.style ? node.style : "") +
+    " " +
+    (nodeProps?.style ? nodeProps?.style : "")}
+  style={`position: absolute; top: ${node.y}em; left: ${node.x}em`}
+>
+  {node.label}
+</div>

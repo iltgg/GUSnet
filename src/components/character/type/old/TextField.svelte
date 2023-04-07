@@ -14,7 +14,10 @@
   let value;
 
   $: {
-    cache = getPath(node.data, $characterData.characters[nodeData.characterId].data);
+    cache = getPath(
+      node.data,
+      $characterData.characters[nodeData.characterId].data
+    );
   }
 
   const dispatch = createEventDispatcher();
@@ -42,16 +45,14 @@
     //     props.data = `main.${props.data}`;
     //   }
     // }
-    cache = getPath(node.data, $characterData.characters[nodeData.characterId].data);
+    cache = getPath(
+      node.data,
+      $characterData.characters[nodeData.characterId].data
+    );
   });
 
   function getPath(path: string, characterData): any {
-    return path
-      .split(".")
-      .reduce(
-        (obj, next) => obj[next],
-        characterData
-      );
+    return path.split(".").reduce((obj, next) => obj[next], characterData);
   }
 </script>
 
@@ -66,7 +67,10 @@
     disabled={!nodeData.edit}
   />
 </div> -->
-<div class={"type text-field " + (node.style ? node.style : "")} style={`position: absolute; top: ${node.y}em; left: ${node.x}em`}>
+<div
+  class={"type text-field " + (node.style ? node.style : "")}
+  style={`position: absolute; top: ${node.y}em; left: ${node.x}em`}
+>
   {node.label}
   <input
     type="text"

@@ -3,7 +3,7 @@ export interface node {
   y: number;
   type: string;
   data?: string;
-  label?: string;
+  label: string;
   style?: string;
 
   method?: string;
