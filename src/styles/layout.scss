@@ -1,0 +1,56 @@
+div.l {
+  margin: 0.5em;
+  width: auto;
+  height: auto;
+
+  &.w-min-content {
+    width: min-content;
+  }
+  &.w-fit-content {
+    width: fit-content;
+    min-width: auto;
+  }
+
+  &.flex {
+    display: flex;
+    &.col {
+      flex-direction: column;
+    }
+    &.row {
+      flex-direction: row;
+    }
+    &.j-left {
+      justify-content: left;
+    }
+    &.j-center {
+      justify-content: center;
+    }
+    &.j-top {
+      justify-content: top;
+    }
+    &.a-center {
+      align-items: center;
+    }
+    &.a-start {
+      align-items: start;
+    }
+    &.a-end {
+      align-items: end;
+    }
+    &.w-100 {
+      width: 100%;
+    }
+  }
+
+  &.grid {
+    display: grid;
+    @for $i from 1 through 10 {
+      &.x#{$i} {
+        grid-template-columns: repeat(#{$i}, min-content);
+      }
+      &.y#{$i} {
+        grid-template-rows: repeat(#{$i}, min-content);
+      }
+    }
+  }
+}
