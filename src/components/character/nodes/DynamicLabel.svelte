@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { Calculator } from "../../../extensions/extention";
-  import type { node } from "../../../layouts/templateTypes";
+  import { Calculator } from "../extension";
+  import type { node } from "../templates/templateTypes";
 
   export let nodeData;
   export let node: node;
@@ -38,7 +38,7 @@
       cache.push(getPath(w, watch[0]));
     });
     cache = cache;
-    console.log(watch[0]);
+    // console.log(watch[0]);
 
     value = calc.evaluate();
   });

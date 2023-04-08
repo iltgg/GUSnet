@@ -1,3 +1,5 @@
+import type { calculationGroup } from "../extension";
+
 export interface node {
   x: number;
   y: number;
@@ -6,6 +8,6 @@ export interface node {
   label: string;
   style?: string;
 
-  method?: string;
+  method?: string | calculationGroup[];
   watch?: string[];
 }

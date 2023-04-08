@@ -9,14 +9,14 @@
     addCharacter,
   } from "../universeData";
   import { userData } from "../userData";
-  import { layout } from "../layouts/LayoutManager";
+  import { template } from "./character/templates/TemplateManager";
 
   import Selector from "./character/Selector.svelte";
   import Character from "./character/Character.svelte";
 
   // DEV
 
-  import { template } from "../layouts/TemplateManager";
+  // import { template } from "./character/templates/TemplateManager";
   import { writable } from "svelte/store";
   const devCopy = cloneDeep(template.templates.cwcyber);
   const dev = writable({
@@ -51,7 +51,7 @@
       return;
     }
 
-    const clone = cloneDeep(layout.layouts[sheet].character);
+    const clone = cloneDeep(template.templates[sheet]);
     clone.data.name = name;
     clone.owner = $userData.user.uid;
     addCharacter($universeData.id, clone);
@@ -115,7 +115,7 @@
           <label>
             Sheet Template:
             <select bind:value={sheet} name="sheet">
-              {#each layout.layoutList as s}
+              {#each template.templateList as s}
                 <option value={s}>{s}</option>
               {/each}
             </select>
@@ -216,7 +216,27 @@
           characterData={dev}
           edit={true}
         />
+        <!-- {#each [...Array(30).keys()] as i}
+          {#each [...Array(25).keys()] as j}
+            <span class="dot" style={`top: ${i * 5}rem; left: ${j * 5}rem`}>
+              {j * 5} <br> {i * 5}
+            </span>
+          {/each}
+        {/each} -->
       </div>
     {/if}
   </div>
 </article>
+
+<style>
+  .dot {
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    background-color: white;
+    color: black;
+    z-index: 0;
+    font-size: 0.5em;
+    line-height: 0.5rem;
+  }
+</style>

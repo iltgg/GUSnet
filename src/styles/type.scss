@@ -37,7 +37,8 @@
   margin-left: 0.5em;
   margin-right: 0.5em;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 @mixin input($type: "input") {
@@ -47,10 +48,12 @@
     font: var(--font-body);
     color: var(--text);
     border: none;
-    padding: 0.4em;
+    padding: 0.3em;
     transition: box-shadow 0.2s linear;
     box-shadow: -0.3em 0 var(--accent-light), 0.2em 0.2em 0.1em var(--ui-one);
     border-radius: 3px;
+    align-self: center;
+    margin-top: 0.3em;
     &:focus {
       outline: none;
       transition: box-shadow 0.2s linear;
@@ -87,6 +90,10 @@ div.type {
         input {
           width: 2em;
         }
+        max-width: 5em;
+        min-width: 5em;
+        width: 5em;
+        align-items: center;
       }
     }
 

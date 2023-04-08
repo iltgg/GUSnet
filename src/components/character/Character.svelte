@@ -15,6 +15,9 @@
   let debounced = debounce(sendUpdate, 5000, { maxWait: 10000 });
   let status = null;
 
+  let advanced = false;
+  let layoutIndex = 0;
+
   function sendUpdate() {
     // updateCharacter(universeId, characterId, updateStack);
 
@@ -52,24 +55,25 @@
     // Questionable code, but the idea is sound
     // Since no longer directly modifying store in fields want to update in debounce update
     // so watchers can leverage data immediately rather than wait for update.
-    let data = "data." + event.detail.dataName;
-    let full = $characterData;
-    let ref = full.characters[characterId];
-    let split = data.split(".");
-    let final = split[split.length - 1];
+    // makes rapid inputs laggy, probably best to implement some form of cache store
+    // let data = "data." + event.detail.dataName;
+    // let full = $characterData;
+    // let ref = full.characters[characterId];
+    // let split = data.split(".");
+    // let final = split[split.length - 1];
 
-    split.pop();
+    // split.pop();
 
-    ref = split.reduce(
-      (obj, next) => obj[next],
-      $characterData.characters[characterId]
-    );
+    // ref = split.reduce(
+    //   (obj, next) => obj[next],
+    //   $characterData.characters[characterId]
+    // );
 
-    // console.log(ref, split, final);
-    ref[final] = updateStack[data];
+    // // console.log(ref, split, final);
+    // ref[final] = updateStack[data];
 
-    characterData.set(full);
-    // end sketchy code
+    // characterData.set(full);
+    // // end sketchy code
 
     status = false;
     window.onbeforeunload = function () {
@@ -96,6 +100,15 @@
     {/if}
   </div>
 {/if}
+
+{#if advanced === true}
+  <div class="advanced">
+    {$characterData.characters[characterId].layout[layoutIndex]}
+
+  </div>
+
+{/if}
+
 
 {#each $characterData.characters[characterId].layout as node}
   <!-- <Node

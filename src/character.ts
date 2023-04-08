@@ -1,18 +1,16 @@
-export class Character {
-  owner: string;
-  data: object;
-  layout: object;
-  constructor(
-    owner = "",
-    data = { name: "placeholder" },
-    layout = { order: [] }
-  ) {
-    this.owner = owner;
-    // this.name = name;
-    this.data = data;
-    this.layout = layout;
-  }
-}
+import { Bytes } from "firebase/firestore";
+import { compressToUint8Array, decompressFromUint8Array } from "lz-string";
+
+// export class Character {
+//   owner: string;
+//   data: object;
+//   layout: object;
+//   constructor(owner = "", data = { name: "placeholder" }, layout = []) {
+//     this.owner = owner;
+//     this.data = data;
+//     this.layout = layout;
+//   }
+// }
 
 export const characterConverter = {
   toFirestore: (character) => {
@@ -20,16 +18,17 @@ export const characterConverter = {
       owner: character.owner,
       // name: character.name,
       data: character.data,
-      layout: JSON.stringify(character.layout),
+      layout: Bytes.fromUint8Array(
+        compressToUint8Array(JSON.stringify(character.layout))
+      ),
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new Character(
-      data.owner,
-      // data.name,
-      data.data,
-      JSON.parse(data.layout)
-    );
+    return {
+      owner: data.owner,
+      data: data.data,
+      layout: JSON.parse(decompressFromUint8Array(data.layout.toUint8Array())),
+    };
   },
 };

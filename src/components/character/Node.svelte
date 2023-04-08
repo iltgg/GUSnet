@@ -1,10 +1,10 @@
 <script lang="ts">
   // import { characterData } from "../../universeData";
   // import { type } from "./TypeManager";
-  import { nodeType } from "./type/NodeManager";
+  import { nodeType } from "./nodes/NodeManager";
 
-  import Conditional from "./Conditional.svelte";
-  import type { node } from "../../layouts/templateTypes";
+  // import Conditional from "./Conditional.svelte";
+  import type { node } from "./templates/templateTypes";
 
   export let node: node;
   export let nodeData;

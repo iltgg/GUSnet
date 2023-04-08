@@ -13,14 +13,16 @@ import {
 } from "firebase/firestore";
 import { writable } from "svelte/store";
 
-import { characterConverter, Character } from "./character";
+import { characterConverter } from "./character";
 
 // import { character } from "./layouts/cw-cy";
 
 export const universeData = writable({
   id: null,
   name: null,
-  extensions: null,
+  players: null,
+  viewers: null,
+  password: null,
   admins: null,
 });
 
@@ -53,7 +55,9 @@ export async function loadUniverse(id) {
       universeData.set({
         id: id,
         name: data.name,
-        extensions: data.extensions,
+        players: data.players,
+        viewers: data.viewers,
+        password: data.password,
         admins: data.admins,
       });
     })

@@ -25,6 +25,60 @@ const CONVERTERS = {
   round: (a) => Math.round(a),
   map: (key, dictionary) => dictionary[key],
 
+  cwStat: (stat) => {
+    if (stat > 17) {
+      stat - 18; // 18-18 = 0, 19-18 = 1, 20-18 = 2, 21| 22 23 | 24 25 | 26 27| 28 29 | 30 31 |32 33
+      if (stat % 2 === 1) {
+        return stat - 11 - (stat - 19) / 2;
+      }
+      return stat - 10 - (stat - 18) / 2;
+    }
+    switch (stat) {
+      case -7:
+      case -6:
+        return -8;
+      case -5:
+        return -7;
+      case -4:
+      case -3:
+        return -6;
+      case -2:
+      case -1:
+        return -5;
+      case 0:
+        return -4;
+      case 1:
+        return -3;
+      case 2:
+      case 3:
+        return -2;
+      case 4:
+        return -1;
+      case 5:
+        return 0;
+      case 6:
+        return 1;
+      case 7:
+      case 8:
+        return 2;
+      case 9:
+      case 10:
+        return 3;
+      case 11:
+      case 12:
+        return 4;
+      case 13:
+      case 14:
+        return 5;
+      case 15:
+        return 6;
+      case 16:
+      case 17:
+        return 7;
+      default:
+        return 0;
+    }
+  },
   numStringify: (a) => {
     if (a > 0) {
       return `+${a}`;
@@ -33,7 +87,7 @@ const CONVERTERS = {
   },
 };
 
-interface calculationGroup {
+export interface calculationGroup {
   conditions: Array<[string, datum | null, datum | null]>;
   converters: Array<
     [
@@ -46,7 +100,7 @@ interface calculationGroup {
 }
 
 // pass, append, get, mutate, return
-enum op {
+export enum op {
   Pass = 0,
   Append,
   Mutate,
@@ -59,6 +113,7 @@ export class Calculator {
 
   constructor(JSON: string, store);
   constructor(calculationArray: calculationGroup[], store);
+  constructor(arg: calculationGroup[] | string, store);
   constructor(arg: calculationGroup[] | string, store) {
     if (typeof arg === "string") {
       this.e = JSON.parse(arg);
