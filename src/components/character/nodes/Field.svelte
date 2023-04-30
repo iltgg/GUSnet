@@ -12,6 +12,8 @@
 
   let error = false;
 
+  let step = true; // for "step edit mode"
+
   $: {
     cache = getPath(
       node.data,
@@ -60,7 +62,9 @@
     (node.style ? node.style : "") +
     " " +
     (nodeProps.style ? nodeProps.style : "")}
-  style={`position: absolute; top: ${node.y}em; left: ${node.x}em`}
+  style={!nodeProps?.posOverride
+    ? `position: absolute; top: ${node.y}em; left: ${node.x}em`
+    : ""}
   class:error
 >
   {node.label}
@@ -80,6 +84,22 @@
       on:input={inputChange}
       disabled={!nodeData.edit}
     />
+  {:else if nodeProps.type === "textStep"}
+    <div
+      on:click={() => {
+        step = !step;
+      }}
+      on:keydown
+    >
+      <input
+        type="text"
+        bind:value
+        on:input={inputChange}
+        disabled={step || !nodeData.edit}
+        on:click|stopPropagation
+        style={step ? "cursor: default;" : ""}
+      />
+    </div>
   {:else if nodeProps.type === "number"}
     <input
       type="number"

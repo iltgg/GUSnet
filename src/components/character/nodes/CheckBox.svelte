@@ -50,7 +50,9 @@
     (node.style ? node.style : "") +
     " " +
     (nodeProps?.style ? nodeProps?.style : "")}
-  style={`position: absolute; top: ${node.y}em; left: ${node.x}em`}
+  style={!nodeProps?.posOverride
+    ? `position: absolute; top: ${node.y}em; left: ${node.x}em`
+    : ""}
 >
   <label>
     <span class="text">{node.label} | {value} | {cache}</span>

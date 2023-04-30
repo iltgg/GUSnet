@@ -10,7 +10,7 @@
   export let nodeData;
   export let characterData;
 
-  let n = nodeType(node.type);
+  let parsedNode = nodeType(node);
 </script>
 
 <!-- <svelte:component
@@ -39,11 +39,29 @@
     {/if}
   </Conditional> -->
 
-<svelte:component
-  this={n.node}
-  {nodeData}
-  {node}
-  {characterData}
-  nodeProps={n.nodeProps}
-  on:edit
-/>
+{#if parsedNode instanceof Array}
+  <div
+    class={"group " + parsedNode[0]}
+    style={`position: absolute; top: ${node.y}em; left: ${node.x}em`}
+  >
+    {#each parsedNode[1] as n}
+      <svelte:component
+        this={n.node}
+        {nodeData}
+        node={n.data}
+        {characterData}
+        nodeProps={n.nodeProps}
+        on:edit
+      />
+    {/each}
+  </div>
+{:else}
+  <svelte:component
+    this={parsedNode.node}
+    {nodeData}
+    node={parsedNode.data}
+    {characterData}
+    nodeProps={parsedNode.nodeProps}
+    on:edit
+  />
+{/if}

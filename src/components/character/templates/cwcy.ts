@@ -1,220 +1,112 @@
 import { op } from "../extension";
-import type { node } from "./templateTypes";
+import { Template } from "./templateGen";
 
 const name = "cwcyber";
 
-const data = {
-  name: "",
-  class: "",
-  apprehension: "",
+const T = new Template(name);
 
-  inventory: "",
+T.node(1, 1, "text", "name", "Name");
+T.node(13, 1, "text", "class", "Class");
+T.node(25, 1, "number", "apprehension", "Apprehension");
 
-  stats: {
-    str: 0,
-    dex: 0,
-    con: 0,
-    int: 0,
-    wis: 0,
-    cha: 0,
-  },
+T.node(42, 5, "stat", "stats.str", "Strength", statMethod("str"));
+T.node(47, 5, "stat", "stats.dex", "Dexterity", statMethod("dex"));
+T.node(52, 5, "stat", "stats.con", "Constitution", statMethod("con"));
+T.node(42, 11.5, "stat", "stats.int", "Intelligence", statMethod("int"));
+T.node(47, 11.5, "stat", "stats.wis", "Wisdom", statMethod("wis"));
+T.node(52, 11.5, "stat", "stats.cha", "Charisma", statMethod("cha"));
 
-  inj: {
-    fat0: "",
-    dan0: "",
-    dan1: "",
-    pai0: "",
-    pai1: "",
-    pai2: "",
-    dis0: "",
-    dis1: "",
-    dis2: "",
-    dis3: "",
-    ann0: "",
-    ann1: "",
-    ann2: "",
-    ann3: "",
-    ann4: "",
-  },
-  skills: {
-    acroP: false,
-    acroE: false,
-  },
-};
+T.node(35, 20, "textStep", "carry.light", "Light", {
+  base: "30ft",
+  style: "small row",
+});
+T.node(35, 23, "dynamicLabel", "", "max: ", carryMethod("L"));
+T.node(45, 20, "textStep", "carry.medium", "Medium", {
+  base: "20ft",
+  style: "small row",
+});
+T.node(45, 23, "dynamicLabel", "", "max: ", carryMethod("M"));
+T.node(55, 20, "textStep", "carry.heavy", "Heavy", {
+  base: "10ft",
+  style: "small row",
+});
+T.node(55, 23, "dynamicLabel", "", "max: ", carryMethod("H"));
 
-/*
-x
-y
-type
-data
-label
-style
+export const template = T.exportTemplate();
 
-method
-watch
+function statMethod(stat: string) {
+  const S = `stats.${stat}`;
 
-*/
-
-const layout: node[] = [
-  // Top
-  { x: 1, y: 1, type: "text", data: "name", label: "Name" },
-  { x: 13, y: 1, type: "text", data: "class", label: "Class" },
-  { x: 25, y: 1, type: "number", data: "apprehension", label: "Apprehension" },
-
-  // Stats
-  {
-    x: 40,
-    y: 5,
-    type: "number",
-    data: "stats.str",
-    label: "Strength",
-    style: "stat",
-  },
-  {
-    x: 42,
-    y: 8.5,
-    type: "dynamicLabel",
-    label: "",
+  return {
     method: [
       {
         conditions: [["all", null, null]],
         converters: [
-          ["cwStat", { op: op.Pass }, { value: "stats.str", DB: true }, null],
+          ["cwStat", { op: op.Pass }, { value: S, DB: true }, null],
           ["numStringify", { op: op.Return, a: 0 }, null, null],
         ],
       },
     ],
-    watch: ["stats.str"],
-  },
-  {
-    x: 45,
-    y: 5,
-    type: "number",
-    data: "stats.dex",
-    label: "Dexterity",
-    style: "stat",
-  },
-  {
-    x: 47,
-    y: 8.5,
-    type: "dynamicLabel",
-    label: "",
-    method: [
-      {
-        conditions: [["all", null, null]],
-        converters: [
-          ["cwStat", { op: op.Pass }, { value: "stats.dex", DB: true }, null],
-          ["numStringify", { op: op.Return, a: 0 }, null, null],
-        ],
-      },
-    ],
-    watch: ["stats.dex"],
-  },
-  {
-    x: 50,
-    y: 5,
-    type: "number",
-    data: "stats.con",
-    label: "Constitution",
-    style: "stat",
-  },
-  {
-    x: 52,
-    y: 8.5,
-    type: "dynamicLabel",
-    label: "",
-    method: [
-      {
-        conditions: [["all", null, null]],
-        converters: [
-          ["cwStat", { op: op.Pass }, { value: "stats.con", DB: true }, null],
-          ["numStringify", { op: op.Return, a: 0 }, null, null],
-        ],
-      },
-    ],
-    watch: ["stats.con"],
-  },
-  {
-    x: 40,
-    y: 10,
-    type: "number",
-    data: "stats.int",
-    label: "Intelligence",
-    style: "stat",
-  },
-  {
-    x: 42,
-    y: 13.5,
-    type: "dynamicLabel",
-    label: "",
-    method: [
-      {
-        conditions: [["all", null, null]],
-        converters: [
-          ["cwStat", { op: op.Pass }, { value: "stats.int", DB: true }, null],
-          ["numStringify", { op: op.Return, a: 0 }, null, null],
-        ],
-      },
-    ],
-    watch: ["stats.int"],
-  },
-  {
-    x: 45,
-    y: 10,
-    type: "number",
-    data: "stats.wis",
-    label: "Wisdom",
-    style: "stat",
-  },
-  {
-    x: 47,
-    y: 13.5,
-    type: "dynamicLabel",
-    label: "",
-    method: [
-      {
-        conditions: [["all", null, null]],
-        converters: [
-          ["cwStat", { op: op.Pass }, { value: "stats.wis", DB: true }, null],
-          ["numStringify", { op: op.Return, a: 0 }, null, null],
-        ],
-      },
-    ],
-    watch: ["stats.wis"],
-  },
-  {
-    x: 50,
-    y: 10,
-    type: "number",
-    data: "stats.cha",
-    label: "Charisma",
-    style: "stat",
-  },
-  {
-    x: 52,
-    y: 13.5,
-    type: "dynamicLabel",
-    label: "",
-    method: [
-      {
-        conditions: [["all", null, null]],
-        converters: [
-          ["cwStat", { op: op.Pass }, { value: "stats.cha", DB: true }, null],
-          ["numStringify", { op: op.Return, a: 0 }, null, null],
-        ],
-      },
-    ],
-    watch: ["stats.cha"],
-  },
-];
+    watch: [S],
+  };
+}
 
-const character = {
-  owner: "",
-  data: data,
-  layout: layout,
-};
-
-export const template = {
-  name: name,
-  character: character,
-};
+function carryMethod(w) {
+  switch (w) {
+    case "L":
+      return {
+        method: [
+          {
+            conditions: [["all", null, null]],
+            converters: [
+              [
+                "max",
+                { op: op.Return },
+                { value: "stats.con", DB: true },
+                { value: 1 },
+              ],
+            ],
+          },
+        ],
+        watch: ["stats.con"],
+      };
+    case "M":
+      return {
+        method: [
+          {
+            conditions: [["all", null, null]],
+            converters: [
+              [
+                "mul",
+                { op: op.Pass },
+                { value: "stats.con", DB: true },
+                { value: 1.5 },
+              ],
+              ["max", { op: op.Return, a: 0 }, null, { value: 2 }],
+            ],
+          },
+        ],
+        watch: ["stats.con"],
+      };
+    case "H":
+      return {
+        method: [
+          {
+            conditions: [["all", null, null]],
+            converters: [
+              [
+                "mul",
+                { op: op.Pass },
+                { value: "stats.con", DB: true },
+                { value: 2 },
+              ],
+              ["max", { op: op.Return, a: 0 }, null, { value: 3 }],
+            ],
+          },
+        ],
+        watch: ["stats.con"],
+      };
+    default:
+      break;
+  }
+}

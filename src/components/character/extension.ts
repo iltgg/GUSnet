@@ -15,6 +15,7 @@ const CONDITIONS = {
 };
 
 const CONVERTERS = {
+  // BASIC CONVERTERS
   add: (a, b) => a + b,
   sub: (a, b) => a - b,
   mul: (a, b) => a * b,
@@ -23,8 +24,14 @@ const CONVERTERS = {
   floor: (a) => Math.floor(a),
   ceil: (a) => Math.ceil(a),
   round: (a) => Math.round(a),
+  max: (a, b) => {
+    console.log(a, b);
+    return Math.max(a, b);
+  },
+  min: (a, b) => Math.min(a, b),
   map: (key, dictionary) => dictionary[key],
 
+  // SPECIFIC CONVERTERS
   cwStat: (stat) => {
     if (stat > 17) {
       stat - 18; // 18-18 = 0, 19-18 = 1, 20-18 = 2, 21| 22 23 | 24 25 | 26 27| 28 29 | 30 31 |32 33
@@ -176,7 +183,7 @@ export class Calculator {
             }
           }
 
-          // console.log(aValue, bValue);
+          // console.log(aValue, bValue, this.e[i].converters[j][0]);
           const calc = CONVERTERS[this.e[i].converters[j][0]](aValue, bValue);
           const converted = { value: calc };
 
