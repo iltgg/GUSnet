@@ -10,7 +10,14 @@ Configurable cloud synced digital table top rpg character sheets + extensions
 
 Svelte SPA + Firebase
 
-## Road Map
+## Features:
+
+- Uses Firebase to sync across devices and users
+- Offers infinite\* customization for any character sheets
+- Free to host\*
+- Extendable
+
+## Feature Road Map:
 
 - [ ] Website icon
 - [ ] User and character profile pictures
@@ -21,3 +28,11 @@ Svelte SPA + Firebase
 - [ ] Animations/ui fluidity
 - [ ] Dice roller/discord integration
 - [ ] Games
+
+## Dev TODO:
+
+- [ ] Documentation
+- [ ] Firebase security
+- [ ] User facing Universe info
+- [ ] Change firebase config
+- [ ] Production server
