@@ -16,13 +16,18 @@ export class Template {
   name: string;
 
   data: object;
-  layout: node[];
+  layout: Array<node[]>;
+  pages: Array<string>;
+
+  index: number;
 
   constructor(name: string) {
     this.name = name;
 
     this.data = {};
-    this.layout = [];
+    this.layout = [[]];
+    this.pages = ["default"];
+    this.index = 0;
   }
 
   node(
@@ -50,7 +55,33 @@ export class Template {
       });
     }
 
-    this.layout.push(build);
+    this.layout.at(this.index).push(build);
+  }
+
+  newPage(name: string) {
+    if (this.layout.length === 1 && this.pages[0] === "default") {
+      this.pages[0] = name;
+    } else {
+      if (this.pages.includes(name)) {
+        console.warn(
+          `multiple page name declaration "${name}" did you intend this?`
+        );
+      }
+
+      this.index++;
+      this.layout.push([]);
+      this.pages[this.index] = name;
+    }
+  }
+
+  setPage(index: number);
+  setPage(pageName: string);
+  setPage(id: string | number): void {
+    if (typeof id === "string") {
+      this.index = this.pages.indexOf(id);
+    } else if (typeof id === "number") {
+      this.index = id;
+    }
   }
 
   private getPathSafe(path: string, dict): any {
@@ -89,7 +120,12 @@ export class Template {
   exportTemplate() {
     return {
       name: this.name,
-      character: { owner: "", data: this.data, layout: this.layout },
+      character: {
+        owner: "",
+        data: this.data,
+        layout: this.layout,
+        pages: this.pages,
+      },
     };
   }
 }

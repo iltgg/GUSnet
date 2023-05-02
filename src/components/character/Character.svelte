@@ -18,10 +18,15 @@
   let advanced = false;
   let layoutIndex = 0;
 
+  let pageIndex = 0;
+
   function sendUpdate() {
     // updateCharacter(universeId, characterId, updateStack);
 
     // also maybe refactor the characterData to use a object of stores rather than a store?
+    // seems to not want to work, would probably have to make it so it only subscribes to a certain document and passes that
+    // but then that complicates other things like the character side bar.
+    // probably leave for now
     // DEV
     Object.keys(updateStack).forEach((data) => {
       let full = $characterData;
@@ -104,24 +109,75 @@
 {#if advanced === true}
   <div class="advanced">
     {$characterData.characters[characterId].layout[layoutIndex]}
-
   </div>
-
 {/if}
 
+<!-- <input type="number" bind:value={pageIndex}> -->
 
-{#each $characterData.characters[characterId].layout as node}
+{#if $characterData.characters[characterId].pages.length > 0}
+  <div class="page-list">
+    {#each $characterData.characters[characterId].pages as page, i}
+      <button
+        class={i === pageIndex ? "active" : ""}
+        on:click={() => {
+          pageIndex = i;
+        }}>{page}</button
+      >
+    {/each}
+  </div>
+{/if}
+
+{#each $characterData.characters[characterId].layout as page, i}
   <!-- <Node
     node={$characterData.characters[characterId].layout[node]}
     nodeData={{ universeId: universeId, characterId: characterId, edit: edit }}
     {characterData}
     on:edit={debounceUpdate}
   /> -->
-  <Node
-    {node}
-    nodeData={{ universeId: universeId, characterId: characterId, edit: edit }}
-    {characterData}
-    on:edit={debounceUpdate}
-  />
-  <!-- {node} -->
+  {#if i === pageIndex}
+    {#each page as node}
+      <Node
+        {node}
+        nodeData={{
+          universeId: universeId,
+          characterId: characterId,
+          edit: edit,
+        }}
+        {characterData}
+        on:edit={debounceUpdate}
+      />
+      <!-- {node} -->
+    {/each}
+  {/if}
 {/each}
+
+<style lang="scss">
+  .page-list {
+    position: relative;
+    left: 0.5em;
+    top: 0.5em;
+    width: fit-content;
+    height: fit-content;
+    border-bottom: 2px solid var(--gutter-grey);
+    padding-bottom: 0.4rem;
+    // padding: 0.6rem;
+    // border-radius: 0.5rem;
+
+    display: flex;
+    flex-direction: row;
+    // background-color: var(--ui-one);
+
+    z-index: 99;
+
+    button {
+      // margin: 0 0 1em 0;
+      margin: 0 1em 0 0;
+      &:last-child {
+        margin: 0;
+      }
+      &.active {
+        outline: 1px solid var(--accent-medium);
+      }
+    }
+  }
+</style>

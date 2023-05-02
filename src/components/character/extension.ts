@@ -24,12 +24,15 @@ const CONVERTERS = {
   floor: (a) => Math.floor(a),
   ceil: (a) => Math.ceil(a),
   round: (a) => Math.round(a),
-  max: (a, b) => {
-    console.log(a, b);
-    return Math.max(a, b);
-  },
+  max: (a, b) => Math.max(a, b),
   min: (a, b) => Math.min(a, b),
   map: (key, dictionary) => dictionary[key],
+
+  //DEBUG
+  print: (a, b) => {
+    console.log(`a: ${a} | b: ${b}`);
+    return a;
+  },
 
   // SPECIFIC CONVERTERS
   cwStat: (stat) => {
@@ -175,7 +178,7 @@ export class Calculator {
           }
 
           if (options.b >= 0) {
-            b = memory[options.b].value;
+            bValue = memory[options.b].value;
           } else {
             if (b) {
               bValue = b?.value;
@@ -183,9 +186,17 @@ export class Calculator {
             }
           }
 
-          // console.log(aValue, bValue, this.e[i].converters[j][0]);
+          // console.log(
+          //   aValue,
+          //   bValue,
+          //   this.e[i].converters[j][0],
+          //   memory[0].value,
+          //   memory[1]?.value
+          // );
           const calc = CONVERTERS[this.e[i].converters[j][0]](aValue, bValue);
           const converted = { value: calc };
+
+          // console.log(converted);
 
           switch (options.op) {
             case op.Pass:

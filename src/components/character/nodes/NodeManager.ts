@@ -66,7 +66,7 @@ export function nodeType(node: node): any {
               method: node.method,
               watch: node.watch,
             },
-            nodeProps: { posOverride: true },
+            nodeProps: { posOverride: true, style: "stat" },
           },
         ],
       ];

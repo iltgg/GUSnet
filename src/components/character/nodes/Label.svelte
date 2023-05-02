@@ -7,7 +7,7 @@
 </script>
 
 <div
-  class={"field label" +
+  class={"type field label" +
     (node.style ? node.style : "") +
     " " +
     (nodeProps?.style ? nodeProps?.style : "")}

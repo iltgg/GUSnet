@@ -51,7 +51,7 @@
     padding: 0.3em;
     transition: box-shadow 0.2s linear;
     box-shadow: -0.3em 0 var(--accent-light), 0.2em 0.2em 0.1em var(--ui-one);
-    border-radius: 3px;
+    border-radius: 0.2em;
     align-self: center;
     margin-top: 0.3em;
     &:focus {
@@ -103,7 +103,8 @@ div.type {
 
       &.stat {
         input {
-          width: 2em;
+          width: 1.5em;
+          font-size: 2em;
         }
         max-width: 5em;
         min-width: 5em;
@@ -128,10 +129,22 @@ div.type {
           height: 20em;
         }
       }
+      &.skinny {
+        textarea {
+          width: 15em;
+          height: 20em;
+        }
+      }
       &.resize {
         textarea {
           resize: both;
         }
+      }
+    }
+
+    &.label {
+      &.stat {
+        font-size: 1.5em;
       }
     }
 
@@ -143,12 +156,15 @@ div.type {
       label {
         position: relative;
         height: 100%;
+        // min-width: 7em;
         display: flex;
         align-items: center;
         justify-content: center;
 
         .text {
           margin-right: 5em;
+          // min-width: 1em;
+          // min-height: 100%;
         }
       }
 

@@ -55,7 +55,7 @@
     : ""}
 >
   <label>
-    <span class="text">{node.label} | {value} | {cache}</span>
+    <span class="text">{node.label}</span>
     <input
       type="checkbox"
       bind:checked={value}

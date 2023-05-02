@@ -171,11 +171,11 @@ button:hover {
   background-color: var(--ui-three);
 }
 
-button:focus {
-  transition: background-color 0.2s linear;
-  background-color: var(--ui-three);
-  outline: none;
-}
+// button:focus {
+//   transition: background-color 0.2s linear;
+//   background-color: var(--ui-three);
+//   outline: none;
+// }
 
 div.login,
 div.sign-up,
