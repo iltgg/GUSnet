@@ -99,7 +99,7 @@ export async function emailSignIn(email, password) {
   }
 }
 
-export async function addUniverse(id) {
+export async function addUniverse(id, password) {
   const universeDoc = doc(db, "universes", id);
 
   try {
@@ -114,11 +114,13 @@ export async function addUniverse(id) {
         return "already in universe";
       }
 
-      await updateDoc(userDoc, {
-        universes: arrayUnion(id),
-      });
       await updateDoc(doc(db, "universes", id), {
         viewers: arrayUnion(auth.currentUser.uid),
+        players: arrayUnion(auth.currentUser.uid), // right now viewers and players are effectively the same, don't forget to update firestore rules if this changes in the future
+        password: password,
+      });
+      await updateDoc(userDoc, {
+        universes: arrayUnion(id),
       });
 
       await updateUserData();
@@ -127,7 +129,7 @@ export async function addUniverse(id) {
     }
   } catch (error) {
     if (error.code === "permission-denied") {
-      return "insufficient permissions";
+      return "invalid or wrong password";
     }
     return error.code;
   }

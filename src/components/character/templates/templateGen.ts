@@ -21,6 +21,8 @@ export class Template {
 
   index: number;
 
+  dataPathsStore: Array<string>;
+
   constructor(name: string) {
     this.name = name;
 
@@ -28,6 +30,8 @@ export class Template {
     this.layout = [[]];
     this.pages = ["default"];
     this.index = 0;
+
+    this.dataPathsStore = [];
   }
 
   node(
@@ -44,6 +48,12 @@ export class Template {
       } else {
         this.initData(data, this.data, defaultTypeMap[type]);
       }
+    }
+
+    if (data !== "" && this.dataPathsStore.includes(data)) {
+      console.warn(`duplicate data ${data}, "${type}, ${label}"`);
+    } else {
+      this.dataPathsStore.push(data);
     }
 
     const build = { x: x, y: y, type: type, data: data, label: label };

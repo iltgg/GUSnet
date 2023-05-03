@@ -163,12 +163,21 @@ button {
   margin: 1em 0 1em 0;
   border-radius: 2px;
   border: 0;
-}
 
-button:hover {
-  cursor: pointer;
-  transition: background-color 0.2s linear;
-  background-color: var(--ui-three);
+  &:hover {
+    cursor: pointer;
+    transition: background-color 0.2s linear;
+    background-color: var(--ui-three);
+  }
+  &:disabled {
+    background-color: var(--ui-one);
+    color: var(--comment-grey);
+    outline: 1px solid var(--ui-two);
+    &:hover {
+      cursor: default;
+      background-color: var(--ui-one);
+    }
+  }
 }
 
 // button:focus {

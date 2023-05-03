@@ -21,6 +21,7 @@ export const characterConverter = {
       layout: Bytes.fromUint8Array(
         compressToUint8Array(JSON.stringify(character.layout))
       ),
+      pages: character.pages,
     };
   },
   fromFirestore: (snapshot, options) => {
@@ -29,6 +30,7 @@ export const characterConverter = {
       owner: data.owner,
       data: data.data,
       layout: JSON.parse(decompressFromUint8Array(data.layout.toUint8Array())),
+      pages: data.pages,
     };
   },
 };

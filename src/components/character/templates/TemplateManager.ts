@@ -1,7 +1,7 @@
 import { template as cwcyber } from "./cwcy";
 
 const templateList = [cwcyber.name];
-const templates = { cwcyber: cwcyber.character };
+const templates = { "Cleared Waters": cwcyber.character };
 
 export const template = {
   templateList: templateList,

@@ -10,7 +10,7 @@
       error = "invalid id";
       return;
     }
-    let e = await au(universe);
+    let e = await au(universe, password);
     if (e) {
       error = e;
     }

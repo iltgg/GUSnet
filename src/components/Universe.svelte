@@ -18,7 +18,7 @@
 
   // import { template } from "./character/templates/TemplateManager";
   import { writable } from "svelte/store";
-  const devCopy = cloneDeep(template.templates.cwcyber);
+  const devCopy = cloneDeep(template.templates["Cleared Waters"]);
   const dev = writable({
     characters: { 777: devCopy },
   });
@@ -45,6 +45,7 @@
   let sheet = "";
   let createError = "";
   let characterCreate = false;
+  let universeInfo = false;
 
   function createCharacter() {
     if (sheet === "" || name === "") {
@@ -105,8 +106,26 @@
     </h1>
     <button
       on:click={() => {
+        universeInfo = !universeInfo;
+      }}>info</button
+    >
+    <!-- Universe Info -->
+    {#if universeInfo}
+      <div>
+        ADMINS: {$universeData.admins}<br />
+        PLAYERS: {$universeData.players}<br />
+        VIEWERS: {$universeData.viewers}<br />
+        ID: {$universeData.id}<br />
+        PASSWORD: {$universeData.password}
+      </div>
+    {/if}
+    <button
+      on:click={() => {
         characterCreate = !characterCreate;
-      }}>add character</button
+      }}
+      disabled={$universeData.players
+        ? !$universeData.players.includes($userData.user.uid)
+        : true}>add character</button
     >
     <!-- Character Creator -->
     {#if characterCreate}
