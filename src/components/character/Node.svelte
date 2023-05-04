@@ -9,6 +9,7 @@
   export let node: node;
   export let nodeData;
   export let characterData;
+  export let characterDataLocal;
 
   let parsedNode = nodeType(node);
 </script>
@@ -50,6 +51,7 @@
         {nodeData}
         node={n.data}
         {characterData}
+        {characterDataLocal}
         nodeProps={n.nodeProps}
         on:edit
       />
@@ -61,6 +63,7 @@
     {nodeData}
     node={parsedNode.data}
     {characterData}
+    {characterDataLocal}
     nodeProps={parsedNode.nodeProps}
     on:edit
   />

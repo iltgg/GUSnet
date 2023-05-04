@@ -34,7 +34,7 @@
   width: 100%;
 
   * {
-    scrollbar-color: var(--accent-medium) var(--background);
+    scrollbar-color: var(--accent-medium) transparent;
     scrollbar-width: thin;
   }
 
@@ -45,7 +45,7 @@
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-track-piece,
   ::-webkit-scrollbar-corner {
-    background: var(--background);
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: var(--accent-medium);
@@ -57,19 +57,24 @@
 
 h1 {
   font-family: var(--font-header);
-  font-size: 2.5em;
+  font-size: 1.8em;
   font-weight: bold;
+  &.title {
+    font-family: var(--font-title);
+    font-size: 2.5em;
+    font-weight: bold;
+  }
 }
 
 h2 {
   font-family: var(--font-header);
-  font-size: 2em;
+  font-size: 1.4em;
   font-weight: bold;
 }
 
 h3 {
   font-family: var(--font-header);
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: bold;
 }
 
@@ -290,7 +295,7 @@ article {
     width: auto;
     height: auto;
     padding: 2em;
-    margin-bottom: 10%;
+    margin-top: 1em;
     display: flex;
     flex-direction: column;
     background-color: var(--ui-one);
@@ -369,6 +374,12 @@ div.sidepanel {
   border-right: 2px solid var(--gutter-grey);
 
   box-shadow: inset -0.3em 0.1em 0.3em var(--black);
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+  h1 {
+    overflow-wrap: break-word;
+  }
 
   div.create {
     form {
@@ -650,6 +661,7 @@ div.update-status {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99;
 
   svg {
     transform: scale(0.75);

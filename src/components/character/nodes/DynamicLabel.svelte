@@ -6,6 +6,7 @@
   export let nodeData;
   export let node: node;
   export let characterData;
+  export let characterDataLocal;
 
   export let nodeProps;
 
@@ -15,7 +16,7 @@
   let cache = [];
 
   $: {
-    watch[0] = $characterData.characters[nodeData.characterId].data;
+    watch[0] = $characterDataLocal.characters[nodeData.characterId].data;
 
     let change = false;
     for (let i = 0; i < node.watch.length; i++) {
@@ -32,7 +33,7 @@
 
   onMount(() => {
     calc = new Calculator(node.method, watch);
-    watch[0] = $characterData.characters[nodeData.characterId].data;
+    watch[0] = $characterDataLocal.characters[nodeData.characterId].data;
     node.watch.forEach((w) => {
       //   console.log(w);
       cache.push(getPath(w, watch[0]));

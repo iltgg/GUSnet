@@ -32,7 +32,7 @@ Svelte SPA + Firebase
 ## Dev TODO:
 
 - [ ] Documentation
-- [ ] Firebase security
+- [.] Firebase security
 - [ ] User facing Universe info
-- [ ] Change firebase config
-- [ ] Production server
+- [.] Change firebase config
+- [.] Production server

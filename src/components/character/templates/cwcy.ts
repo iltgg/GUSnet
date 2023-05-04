@@ -10,15 +10,16 @@ T.newPage("Character");
 const top = 3;
 
 T.node(1, top, "text", "name", "Name");
-T.node(13, top, "text", "class", "Class");
-T.node(25, top, "number", "apprehension", "Apprehension");
+T.node(13, top, "text", "antexis", "Antecedent Existence");
+T.node(25, top, "text", "prevoc", "Preliminary Vocation");
+T.node(37, top, "number", "apprehension", "Apprehension");
 
-T.node(42, top, "stat", "stats.str", "Strength", statMethod("str"));
-T.node(50, top, "stat", "stats.dex", "Dexterity", statMethod("dex"));
-T.node(58, top, "stat", "stats.con", "Constitution", statMethod("con"));
-T.node(42, top + 8, "stat", "stats.int", "Intelligence", statMethod("int"));
-T.node(50, top + 8, "stat", "stats.wis", "Wisdom", statMethod("wis"));
-T.node(58, top + 8, "stat", "stats.cha", "Charisma", statMethod("cha"));
+T.node(42+5, top, "stat", "stats.str", "Strength", statMethod("str"));
+T.node(50+5, top, "stat", "stats.dex", "Dexterity", statMethod("dex"));
+T.node(58+5, top, "stat", "stats.con", "Constitution", statMethod("con"));
+T.node(42+5, top + 8, "stat", "stats.int", "Intelligence", statMethod("int"));
+T.node(50+5, top + 8, "stat", "stats.wis", "Wisdom", statMethod("wis"));
+T.node(58+5, top + 8, "stat", "stats.cha", "Charisma", statMethod("cha"));
 
 const inj = (a) => 1 + 12 * a;
 const hi = (a) => top + 4 + 7 * a;
@@ -98,14 +99,43 @@ T.node(ta(3), top + 6 + 18, "textarea", "inv.misc3", "Miscellaneous", {
 T.newPage("Prowesses");
 
 T.node(1, top, "number", "prow.app", "Accumulated Peculiarity Points");
-T.node(1, top + 4, "label", "", "Accumulated Statistical Training");
+
+T.node(1, top + 5, "label", "", "Accumulated Statistical Training");
 T.node(1, top + 6, "number", "prow.aststr", "Strength", { style: "small row" });
-T.node(1, top + 8, "number", "prow.astdex", "Dexterity", { style: "small row" });
-T.node(1, top + 10, "number", "prow.astcon", "Constitution", { style: "small row" });
-T.node(1, top + 12, "number", "prow.astint", "Intelligence", { style: "small row" });
+T.node(1, top + 8, "number", "prow.astdex", "Dexterity", {
+  style: "small row",
+});
+T.node(1, top + 10, "number", "prow.astcon", "Constitution", {
+  style: "small row",
+});
+T.node(1, top + 12, "number", "prow.astint", "Intelligence", {
+  style: "small row",
+});
 T.node(1, top + 14, "number", "prow.astwis", "Wisdom", { style: "small row" });
-T.node(1, top + 16, "number", "prow.astcha", "Charisma", { style: "small row" });
-// T.node(1, top, "label", "", "Accumulated Peculiarity Training");
+T.node(1, top + 16, "number", "prow.astcha", "Charisma", {
+  style: "small row",
+});
+
+T.node(11, top + 6.5, "label", "", "/5");
+T.node(11, top + 8.5, "label", "", "/5");
+T.node(11, top + 10.5, "label", "", "/5");
+T.node(11, top + 12.5, "label", "", "/5");
+T.node(11, top + 14.5, "label", "", "/5");
+T.node(11, top + 16.5, "label", "", "/5");
+
+T.node(1, top + 20, "number", "prow.apt", "Accumulated Peculiarity Training");
+T.node(11.5, top + 21.5 + 0.15, "label", "", "/5");
+
+T.node(1, top + 25, "label", "", "Wound Recuperation");
+T.node(1, top + 27, "text", "prow.rec", "Recovering Wound");
+T.node(1, top + 31, "number", "prow.req", "Weeks Required");
+
+T.node(20, top, "textarea", "prow.pec", "Peculiarities", {
+  style: "skinny-tall",
+});
+T.node(37, top, "textarea", "prow.lore", "Lore", { style: "skinny-tall" });
+T.node(54, top, "textarea", "prow.notes", "Notes", { style: "skinny-tall" });
+T.node(71, top, "textarea", "prow.info", "Info", { style: "skinny-tall" });
 
 T.newPage("Skills");
 
@@ -319,6 +349,7 @@ function carryMethod(w) {
                 { value: "stats.con", DB: true },
                 { value: 1.5 },
               ],
+              ["floor", { op: op.Pass, a: 0 }, null, null],
               ["max", { op: op.Return, a: 0 }, null, { value: 2 }],
             ],
           },
@@ -337,6 +368,7 @@ function carryMethod(w) {
                 { value: "stats.con", DB: true },
                 { value: 2 },
               ],
+              ["floor", { op: op.Pass, a: 0 }, null, null],
               ["max", { op: op.Return, a: 0 }, null, { value: 3 }],
             ],
           },

@@ -11,7 +11,7 @@ import {
   getDocs,
   addDoc,
 } from "firebase/firestore";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 
 import { characterConverter } from "./character";
 
@@ -27,6 +27,9 @@ export const universeData = writable({
 });
 
 export const characterData = writable({
+  characters: {},
+});
+export const characterDataLocal = writable({
   characters: {},
 });
 
@@ -85,6 +88,8 @@ export async function loadUniverse(id) {
           });
         }
       });
+
+      characterDataLocal.set(get(characterData));
     })
   );
 
@@ -113,4 +118,31 @@ export async function addCharacter(id, character) {
   );
 }
 
-export async function subscribeToData() {}
+export async function getUsernames(
+  ids: Array<string>
+): Promise<{ [key: string]: string }> {
+  const usernames = {};
+
+  if (!ids) {
+    return usernames;
+  }
+
+  await Promise.all(
+    ids.map(async (id) => {
+      const userDoc = doc(db, "users", id);
+
+      try {
+        const userSnapshot = await getDoc(userDoc);
+        if (userSnapshot.exists()) {
+          usernames[id] = userSnapshot.data().username;
+        } else {
+          usernames[id] = false;
+        }
+      } catch (error) {
+        usernames[id] = false;
+      }
+    })
+  );
+
+  return usernames;
+}

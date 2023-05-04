@@ -160,16 +160,16 @@ div.type {
           height: 20em;
         }
       }
+      &.skinny-tall {
+        textarea {
+          width: 15em;
+          height: 30em;
+        }
+      }
       &.small-text {
         textarea {
           font-size: 0.8em;
         }
-        // &.skinny{
-        //   textarea{
-        //     width: calc(1.2 * 15em);
-        //     height: calc(1.2 * 20em);
-        //   }
-        // }
       }
       &.resize {
         textarea {
@@ -230,6 +230,11 @@ div.type {
       input:disabled ~ .custom {
         &:hover {
           background-color: var(--ui-two);
+        }
+      }
+      input:checked:disabled ~ .custom {
+        &:hover {
+          background-color: var(--accent-dark);
         }
       }
     }

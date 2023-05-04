@@ -5,14 +5,18 @@
   import {
     universeData,
     characterData,
+    characterDataLocal,
     loadUniverse,
     addCharacter,
+    getUsernames,
   } from "../universeData";
   import { userData } from "../userData";
   import { template } from "./character/templates/TemplateManager";
 
   import Selector from "./character/Selector.svelte";
-  import Character from "./character/Character.svelte";
+  let Character;
+  // import Character from "./character/Character.svelte";
+
 
   // DEV
 
@@ -29,6 +33,8 @@
   onMount(async () => {
     if (params.universeId !== "DEV")
       unsubscribe = await loadUniverse(params.universeId);
+
+    Character = (await import("./character/Character.svelte")).default;
   });
 
   onDestroy(() => {
@@ -41,6 +47,10 @@
     });
   });
 
+  $: admins = getUsernames($universeData.admins);
+  $: players = getUsernames($universeData.players);
+  $: viewers = getUsernames($universeData.viewers);
+
   let name = "";
   let sheet = "";
   let createError = "";
@@ -49,6 +59,7 @@
 
   function createCharacter() {
     if (sheet === "" || name === "") {
+      createError = "select sheet and/or name";
       return;
     }
 
@@ -112,15 +123,38 @@
     <!-- Universe Info -->
     {#if universeInfo}
       <div>
-        ADMINS: {$universeData.admins}<br />
-        PLAYERS: {$universeData.players}<br />
-        VIEWERS: {$universeData.viewers}<br />
-        ID: {$universeData.id}<br />
-        PASSWORD: {$universeData.password}
+        <button
+          on:click={() => {
+            console.log(admins, players, viewers, $universeData, $userData);
+          }}>log info</button
+        >
+        <h3>Admins:</h3>
+        {#await admins then admins}
+          {#each Object.values(admins) as admin}
+            {admin} <br />
+          {/each}
+        {/await}
+        <h3>Players:</h3>
+        {#await players then players}
+          {#each Object.values(players) as player}
+            {player} <br />
+          {/each}
+        {/await}
+        <h3>Viewers:</h3>
+        {#await viewers then viewers}
+          {#each Object.values(viewers) as viewer}
+            {viewer} <br />
+          {/each}
+        {/await}
+        <h3>Id:</h3>
+        {$universeData.id}<br />
+        <h3>Password:</h3>
+        {$universeData.password}
       </div>
     {/if}
     <button
       on:click={() => {
+        createError = "";
         characterCreate = !characterCreate;
       }}
       disabled={$universeData.players
@@ -149,16 +183,30 @@
             />
           </label>
           <input type="submit" value="create" />
+          <span class="error">{createError}</span>
         </form>
       </div>
     {/if}
     <!-- Character Selectors -->
+    <h2>Your Characters</h2>
     {#each Object.keys($characterData.characters) as id}
-      <Selector
-        {id}
-        name={$characterData.characters[id].data.name}
-        on:open={openCharacter}
-      />
+      {#if $characterData.characters[id].owner === $userData.user.uid}
+        <Selector
+          {id}
+          name={$characterData.characters[id].data.name}
+          on:open={openCharacter}
+        />
+      {/if}
+    {/each}
+    <h2>Characters</h2>
+    {#each Object.keys($characterData.characters) as id}
+      {#if $characterData.characters[id].owner !== $userData.user.uid}
+        <Selector
+          {id}
+          name={$characterData.characters[id].data.name}
+          on:open={openCharacter}
+        />
+      {/if}
     {/each}
   </div>
 
@@ -211,7 +259,6 @@
 
     {#key openCharacters.length}
       {#each openCharacters as id (id)}
-        <!-- {#if displayCharacter} -->
         <div
           class="character"
           style:display={displayCharacter === id ? "flex" : "none"}
@@ -220,21 +267,22 @@
             characterId={id}
             universeId={$universeData.id}
             {characterData}
+            {characterDataLocal}
             edit={$characterData.characters[id].owner === $userData.user.uid}
           />
         </div>
-        <!-- {/if} -->
       {/each}
     {/key}
     <!-- DEV -->
-    {#if params.universeId === "DEV"}
+    <!-- {#if params.universeId === "DEV"}
       <div class="character">
-        <Character
-          characterId={777}
-          universeId={$universeData.id}
-          characterData={dev}
-          edit={true}
-        />
+          <Character
+            characterId={777}
+            universeId={$universeData.id}
+            characterData={dev}
+            characterDataLocal={dev}
+            edit={true}
+          /> -->
         <!-- {#each [...Array(30).keys()] as i}
           {#each [...Array(25).keys()] as j}
             <span class="dot" style={`top: ${i * 5}rem; left: ${j * 5}rem`}>
@@ -242,13 +290,13 @@
             </span>
           {/each}
         {/each} -->
-      </div>
-    {/if}
+      <!-- </div>
+    {/if} -->
   </div>
 </article>
 
 <style>
-  .dot {
+  /* .dot {
     position: absolute;
     width: 1rem;
     height: 1rem;
@@ -257,5 +305,5 @@
     z-index: 0;
     font-size: 0.5em;
     line-height: 0.5rem;
-  }
+  } */
 </style>

@@ -9,6 +9,7 @@
   export let universeId;
   export let characterId;
   export let characterData;
+  export let characterDataLocal;
   export let edit = false;
 
   let updateStack = {};
@@ -21,34 +22,34 @@
   let pageIndex = 0;
 
   function sendUpdate() {
-    // updateCharacter(universeId, characterId, updateStack);
+    updateCharacter(universeId, characterId, updateStack);
 
     // also maybe refactor the characterData to use a object of stores rather than a store?
     // seems to not want to work, would probably have to make it so it only subscribes to a certain document and passes that
     // but then that complicates other things like the character side bar.
     // probably leave for now
     // DEV
-    Object.keys(updateStack).forEach((data) => {
-      let full = $characterData;
-      let ref = full.characters[characterId];
-      let split = data.split(".");
-      let final = split[split.length - 1];
+    // Object.keys(updateStack).forEach((data) => {
+    //   let full = $characterData;
+    //   let ref = full.characters[characterId];
+    //   let split = data.split(".");
+    //   let final = split[split.length - 1];
 
-      split.pop();
+    //   split.pop();
 
-      ref = split.reduce(
-        (obj, next) => obj[next],
-        $characterData.characters[characterId]
-      );
+    //   ref = split.reduce(
+    //     (obj, next) => obj[next],
+    //     $characterData.characters[characterId]
+    //   );
 
-      // console.log(ref, split, final);
-      ref[final] = updateStack[data];
+    //   // console.log(ref, split, final);
+    //   ref[final] = updateStack[data];
 
-      characterData.set(full);
-    });
+    //   characterData.set(full);
+    // });
     // DEV
 
-    console.log(updateStack);
+    // console.log(updateStack);
     updateStack = {};
     window.onbeforeunload = undefined;
     status = true;
@@ -61,23 +62,27 @@
     // Since no longer directly modifying store in fields want to update in debounce update
     // so watchers can leverage data immediately rather than wait for update.
     // makes rapid inputs laggy, probably best to implement some form of cache store
-    // let data = "data." + event.detail.dataName;
-    // let full = $characterData;
-    // let ref = full.characters[characterId];
-    // let split = data.split(".");
-    // let final = split[split.length - 1];
+    
+    // now we maintain a local store which is reset to current version every time firebase detects a change
 
-    // split.pop();
+    let data = "data." + event.detail.dataName;
+    let full = $characterDataLocal;
+    let ref = full.characters[characterId];
+    let split = data.split(".");
+    let final = split[split.length - 1];
 
-    // ref = split.reduce(
-    //   (obj, next) => obj[next],
-    //   $characterData.characters[characterId]
-    // );
+    split.pop();
 
-    // // console.log(ref, split, final);
-    // ref[final] = updateStack[data];
+    ref = split.reduce(
+      (obj, next) => obj[next],
+      $characterDataLocal.characters[characterId]
+    );
 
-    // characterData.set(full);
+    // console.log(ref, split, final);
+    ref[final] = updateStack[data];
+
+    characterDataLocal.set(full);
+    
     // // end sketchy code
 
     status = false;
@@ -144,6 +149,7 @@
           edit: edit,
         }}
         {characterData}
+        {characterDataLocal}
         on:edit={debounceUpdate}
       />
       <!-- {node} -->

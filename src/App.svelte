@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
   import Router from "svelte-spa-router";
   import { push, pop, replace, location } from "svelte-spa-router";
+  import { wrap } from "svelte-spa-router/wrap";
   import { updateSvg } from "jdenticon";
 
   import {
@@ -14,16 +15,59 @@
   import Login from "./components/Login.svelte";
   import Home from "./components/Home.svelte";
   import SignUp from "./components/SignUp.svelte";
-  import Universe from "./components/Universe.svelte";
+  // import Universe from "./components/Universe.svelte";
   import Header from "./components/Header.svelte";
-  import RestPassword from "./components/RestPassword.svelte";
+  import ResetPassword from "./components/ResetPassword.svelte";
+  import NotFound from "./components/NotFound.svelte";
+  import { get } from "svelte/store";
 
   const routes = {
-    "/": Home,
-    "/login": Login,
-    "/signup": SignUp,
-    "/reset-password": RestPassword,
-    "/universe/:universeId": Universe,
+    "/": wrap({
+      component: Home,
+      userData: { user: userData },
+      conditions: [
+        (detail) => {
+          return !!get(detail.userData.user).user;
+        },
+      ],
+    }),
+    "/login": wrap({
+      component: Login,
+      userData: { user: userData },
+      conditions: [
+        (detail) => {
+          return !get(detail.userData.user).user;
+        },
+      ],
+    }),
+    "/signup": wrap({
+      component: SignUp,
+      userData: { user: userData },
+      conditions: [
+        (detail) => {
+          return !get(detail.userData.user).user;
+        },
+      ],
+    }),
+    "/reset-password": wrap({
+      component: ResetPassword,
+      userData: { user: userData },
+      conditions: [
+        (detail) => {
+          return !get(detail.userData.user).user;
+        },
+      ],
+    }),
+    "/universe/:universeId": wrap({
+      asyncComponent: () => import("./components/Universe.svelte"),
+      userData: { user: userData },
+      conditions: [
+        (detail) => {
+          return !!get(detail.userData.user).user;
+        },
+      ],
+    }),
+    "*": NotFound,
   };
 
   setAuthStateListener(async (user) => {
@@ -63,11 +107,18 @@
     };
   });
 
-  $: displayHeader = !(
-    $location === "/login" ||
-    $location === "/signup" ||
-    $location === "/reset-password"
-  );
+  function conditionsFailed(event) {
+    if (!!get(event.detail.userData.user).user) push("/");
+    else push("/login");
+  }
+
+  // $: displayHeader = !(
+  //   $location === "/login" ||
+  //   $location === "/signup" ||
+  //   $location === "/reset-password"
+  // );
+
+  $: displayHeader = !!$userData.user;
 
   let render = false;
 </script>
@@ -77,6 +128,6 @@
     <Header />
   {/if}
   <main>
-    <Router {routes} />
+    <Router {routes} on:conditionsFailed={conditionsFailed} />
   </main>
 {/if}

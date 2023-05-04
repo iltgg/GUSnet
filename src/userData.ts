@@ -17,6 +17,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { writable } from "svelte/store";
+import { push } from "svelte-spa-router";
 
 // store containing auth user object and db data
 export const userData = writable({
@@ -136,6 +137,7 @@ export async function addUniverse(id, password) {
 }
 
 export async function userSignOut() {
+  push("/login");
   await signOut(auth);
 }
 

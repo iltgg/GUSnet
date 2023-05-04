@@ -2,6 +2,7 @@
   export let nodeData;
   export let node;
   export let characterData;
+  export let characterDataLocal;
 
   export let nodeProps;
 </script>

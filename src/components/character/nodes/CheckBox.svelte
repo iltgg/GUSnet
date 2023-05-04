@@ -4,6 +4,7 @@
   export let nodeData;
   export let node;
   export let characterData;
+  export let characterDataLocal;
 
   export let nodeProps;
 
@@ -15,6 +16,9 @@
       node.data,
       $characterData.characters[nodeData.characterId].data
     );
+    if (!nodeData.edit) {
+      value = cache;
+    }
   }
 
   const dispatch = createEventDispatcher();

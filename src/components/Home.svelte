@@ -18,12 +18,11 @@
 </script>
 
 <article class="home">
-  <h1>GUSnet</h1>
+  <h1 class="title">GUSnet</h1>
   <div class="grid">
     <div class="one">
       <h2>Universes:</h2>
       <div class="universes">
-        <a href="#/universe/DEV">DEV</a>
         {#if $userData.universes}
           {#each Object.keys($userData.universes) as uni (uni)}
             <a href={`#/universe/${uni}`}>{$userData.universes[uni].name}</a>
@@ -53,8 +52,9 @@
     </div>
     <div class="two">
       <h2>News:</h2>
-      Release α.1:
+      Release ALPHA.1:
       <ul>
+        <li>Report bugs to the nearest authority</li>
         <li>Updates coming soon™</li>
       </ul>
     </div>
