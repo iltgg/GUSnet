@@ -24,6 +24,7 @@ export const universeData = writable({
   viewers: null,
   password: null,
   admins: null,
+  fields: null,
 });
 
 export const characterData = writable({
@@ -40,6 +41,7 @@ Subscribe to data
 
 export async function loadUniverse(id) {
   let unsubscribe = [];
+  characterData.set({ characters: {} });
 
   const universeDoc = doc(db, "universes", id);
   const characterCollection = collection(
@@ -62,6 +64,7 @@ export async function loadUniverse(id) {
         viewers: data.viewers,
         password: data.password,
         admins: data.admins,
+        fields: data.fields,
       });
     })
   );

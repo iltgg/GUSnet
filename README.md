@@ -26,13 +26,19 @@ Svelte SPA + Firebase
 - [ ] Sheet editor/creator GUI
 - [ ] Keyboard control
 - [ ] Animations/ui fluidity
-- [ ] Dice roller/discord integration
+- [x] Dice roller/discord integration
 - [ ] Games
 
 ## Dev TODO:
 
 - [ ] Documentation
-- [.] Firebase security
+- [x] Firebase security
 - [ ] User facing Universe info
-- [.] Change firebase config
-- [.] Production server
+- [x] Change firebase config
+- [x] Production server
+
+## Information
+
+Small side project I made to learn Svelte and "larger" scale frontend web development.
+
+Project is dead, too much spaghetti code and bad code. One day I might rewrite it (again again).

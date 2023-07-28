@@ -169,7 +169,8 @@ button {
   border-radius: 2px;
   border: 0;
 
-  &:hover {
+  &:hover,
+  &.secondary:hover {
     cursor: pointer;
     transition: background-color 0.2s linear;
     background-color: var(--ui-three);
@@ -182,6 +183,10 @@ button {
       cursor: default;
       background-color: var(--ui-one);
     }
+  }
+  &.secondary {
+    background-color: var(--ui-one);
+    border: 2px solid var(--ui-two);
   }
 }
 
@@ -363,6 +368,99 @@ article {
       }
     }
   }
+
+  div.modal {
+    min-width: 10em;
+    min-height: 10em;
+    background-color: var(--ui-two);
+    position: absolute;
+    z-index: 101;
+    left: 17em;
+    top: 5em;
+
+    span.handle {
+      height: 1.5em;
+      width: 100%;
+      display: block;
+      background-color: var(--accent-medium);
+      padding-left: 1em;
+      box-sizing: border-box;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      button {
+        width: 2em;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: var(--accent-darker);
+        border-radius: 0;
+        &:hover {
+          background-color: var(--accent-dark);
+        }
+      }
+    }
+
+    &.small {
+      width: 15em;
+    }
+
+    div.body {
+      padding: 0.2em;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      .name {
+        width: 100%;
+        white-space: nowrap;
+      }
+
+      input[type="text"] {
+        font-size: 1.2em;
+      }
+
+      input[type="submit"] {
+        font-family: var(--font-body);
+        font-weight: bold;
+        height: auto;
+        width: 4em;
+        color: var(--text);
+        transition: background-color 0.2s linear;
+
+        background-color: var(--ui-one);
+        padding: 0.5em 0 0.5em 0;
+        margin-top: 0.2em;
+        // margin: 1em 0 1em 0;
+        // margin-bottom: 2em;
+        border-radius: 2px;
+        border: 0;
+        &:hover {
+          cursor: pointer;
+          transition: background-color 0.2s linear;
+          background-color: var(--ui-three);
+        }
+        &:focus {
+          transition: background-color 0.2s linear;
+          background-color: var(--ui-three);
+          outline: none;
+        }
+      }
+
+      form {
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+      }
+
+      p {
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        &.error {
+          color: var(--light-red);
+        }
+      }
+    }
+  }
 }
 
 div.sidepanel {
@@ -380,14 +478,21 @@ div.sidepanel {
   h1 {
     overflow-wrap: break-word;
   }
+  button {
+    margin: 0 0 0.2em 0;
+  }
+
+  div.panel {
+    margin-left: 1em;
+  }
 
   div.create {
     form {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      margin-bottom: 1em;
-      border-bottom: 1em solid var(--accent-medium);
+      // margin-bottom: 1em;
+      // border-bottom: 1em solid var(--accent-medium);
       input[type="text"],
       select {
         font-family: var(--font-body);
@@ -420,7 +525,7 @@ div.sidepanel {
         background-color: var(--ui-two);
         padding: 0.5em 0 0.5em 0;
         // margin: 1em 0 1em 0;
-        margin-bottom: 2em;
+        // margin-bottom: 2em;
         border-radius: 2px;
         border: 0;
         &:hover {

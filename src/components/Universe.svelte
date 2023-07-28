@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { add, cloneDeep } from "lodash-es";
+  import { movable } from "@svelte-put/movable";
 
   import {
     universeData,
@@ -12,11 +13,11 @@
   } from "../universeData";
   import { userData } from "../userData";
   import { template } from "./character/templates/TemplateManager";
+  import { DiceRoller } from "../tools/diceRoller";
 
   import Selector from "./character/Selector.svelte";
   let Character;
   // import Character from "./character/Character.svelte";
-
 
   // DEV
 
@@ -56,6 +57,12 @@
   let createError = "";
   let characterCreate = false;
   let universeInfo = false;
+  let showTools = false;
+  const tools = { diceRoller: false };
+  let handle;
+
+  $: ROLLER = new DiceRoller($universeData.fields?.diceHook);
+  let roll = "";
 
   function createCharacter() {
     if (sheet === "" || name === "") {
@@ -77,7 +84,8 @@
   let openCharacters = [];
 
   function openCharacter(event) {
-    displayCharacter = event.detail;
+    // displayCharacter = event.detail;
+    setDisplayCharacter(event.detail);
     if (openCharacters.includes(event.detail)) return;
 
     openCharacters.push(event.detail);
@@ -105,9 +113,20 @@
 
   function setDisplayCharacter(id) {
     displayCharacter = id;
+    if ($characterData.characters[id].owner === $userData.user.uid) {
+      lastActiveOwnedCharacter = id;
+      // console.log("fsdfsdf");
+    }
   }
 
   let displayCharacter = null;
+  let lastActiveOwnedCharacter = null;
+
+  $: lastActiveOwnedCharacterName = lastActiveOwnedCharacter
+    ? $characterData.characters[lastActiveOwnedCharacter].data.name
+    : "Gus";
+
+  let rollError = "";
 </script>
 
 <article>
@@ -122,8 +141,9 @@
     >
     <!-- Universe Info -->
     {#if universeInfo}
-      <div>
+      <div class="panel">
         <button
+          class="secondary"
           on:click={() => {
             console.log(admins, players, viewers, $universeData, $userData);
           }}>log info</button
@@ -154,6 +174,65 @@
     {/if}
     <button
       on:click={() => {
+        showTools = !showTools;
+      }}>tools</button
+    >
+    {#if showTools}
+      <div class="panel">
+        <button
+          class="secondary"
+          on:click={() => {
+            tools.diceRoller = !tools.diceRoller;
+          }}
+        >
+          dice roller
+        </button>
+      </div>
+    {/if}
+    {#if tools.diceRoller}
+      <div
+        class="modal small"
+        use:movable={{ handle, limit: { parent: "screen" } }}
+      >
+        <span class="handle" bind:this={handle}>
+          Dice Roller
+          <button
+            on:click={() => {
+              tools.diceRoller = !tools.diceRoller;
+            }}>x</button
+          >
+        </span>
+        <div class="body">
+          <div class="name">Rolling for: {lastActiveOwnedCharacterName}</div>
+          <form
+            on:submit|preventDefault={() => {
+              rollError = ROLLER.roll(
+                lastActiveOwnedCharacterName,
+                $userData.username,
+                "",
+                roll,
+                ""
+              );
+            }}
+          >
+            <input
+              type="text"
+              bind:value={roll}
+              placeholder="insert roll, enter to submit"
+            />
+            <input type="submit" value="roll" />
+          </form>
+          <p class="error">{rollError}</p>
+          <p>Roll syntax:</p>
+          <p>xdy(adv/dis a)(+/- b)</p>
+          <p>e.g. 1d10adv4+2</p>
+          <p>e.g. d14-2 (x is optional)</p>
+        </div>
+      </div>
+    {/if}
+
+    <button
+      on:click={() => {
         createError = "";
         characterCreate = !characterCreate;
       }}
@@ -163,7 +242,7 @@
     >
     <!-- Character Creator -->
     {#if characterCreate}
-      <div class="create">
+      <div class="create panel">
         <form on:submit|preventDefault={createCharacter}>
           <label>
             Sheet Template:
@@ -283,14 +362,14 @@
             characterDataLocal={dev}
             edit={true}
           /> -->
-        <!-- {#each [...Array(30).keys()] as i}
+    <!-- {#each [...Array(30).keys()] as i}
           {#each [...Array(25).keys()] as j}
             <span class="dot" style={`top: ${i * 5}rem; left: ${j * 5}rem`}>
               {j * 5} <br> {i * 5}
             </span>
           {/each}
         {/each} -->
-      <!-- </div>
+    <!-- </div>
     {/if} -->
   </div>
 </article>

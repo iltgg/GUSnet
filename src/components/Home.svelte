@@ -52,10 +52,12 @@
     </div>
     <div class="two">
       <h2>News:</h2>
-      Release ALPHA.1:
+      Release ALPHA.2:
       <ul>
         <li>Report bugs to the nearest authority</li>
-        <li>Updates coming soon™</li>
+        <li>Fixed persistent characters when switching universes</li>
+        <li>Added dice roller, requires discord webhook</li>
+        <li>Modifier bug still a problem</li>
       </ul>
     </div>
   </div>
