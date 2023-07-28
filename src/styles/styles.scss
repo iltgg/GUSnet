@@ -370,26 +370,27 @@ article {
   }
 
   div.modal {
-    min-width: 10em;
-    min-height: 10em;
+    min-width: 10rem;
+    min-height: 10rem;
     background-color: var(--ui-two);
     position: absolute;
     z-index: 101;
-    left: 17em;
-    top: 5em;
+    left: 17rem;
+    top: 5rem;
 
     span.handle {
-      height: 1.5em;
+      height: 1.5rem;
       width: 100%;
       display: block;
       background-color: var(--accent-medium);
-      padding-left: 1em;
+      padding-left: 1rem;
       box-sizing: border-box;
       user-select: none;
       display: flex;
       justify-content: space-between;
+      font-size: 1rem;
       button {
-        width: 2em;
+        width: 2rem;
         height: 100%;
         margin: 0;
         padding: 0;
@@ -402,7 +403,13 @@ article {
     }
 
     &.small {
-      width: 15em;
+      min-width: 15em;
+    }
+
+    &.resize{
+      resize: both;
+      overflow: hidden;
+      display: block;
     }
 
     div.body {
@@ -430,8 +437,9 @@ article {
 
         background-color: var(--ui-one);
         padding: 0.5em 0 0.5em 0;
-        margin-top: 0.2em;
+        // margin-top: 0.2em;
         // margin: 1em 0 1em 0;
+        margin-left: 0.2em;
         // margin-bottom: 2em;
         border-radius: 2px;
         border: 0;
@@ -450,6 +458,8 @@ article {
       form {
         margin-top: 0.2em;
         margin-bottom: 0.2em;
+        display: flex;
+        align-items: center;
       }
 
       p {

@@ -1,7 +1,9 @@
-<script>
+<script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import { add, cloneDeep } from "lodash-es";
   import { movable } from "@svelte-put/movable";
+  import { resize, type ResizeDetail } from "@svelte-put/resize";
+  import { shortcut } from "@svelte-put/shortcut";
 
   import {
     universeData,
@@ -58,7 +60,7 @@
   let characterCreate = false;
   let universeInfo = false;
   let showTools = false;
-  const tools = { diceRoller: false };
+  const tools = { diceRoller: false, diceTips: true };
   let handle;
 
   $: ROLLER = new DiceRoller($universeData.fields?.diceHook);
@@ -127,7 +129,46 @@
     : "Gus";
 
   let rollError = "";
+
+  let modalInput;
+
+  function onResized(e: CustomEvent<ResizeObserver>) {
+    const { entry } = e.detail;
+    const target = entry.target as HTMLElement;
+    target.style.fontSize = `${Math.max(
+      Math.floor(
+        (Math.min(
+          entry.borderBoxSize[0].inlineSize,
+          entry.borderBoxSize[0].blockSize
+        ) /
+          269) *
+          10
+      ) / 10,
+      1
+    )}em`;
+  }
 </script>
+
+<svelte:window
+  use:shortcut={{
+    trigger: {
+      key: "q",
+      modifier: ["ctrl"],
+      callback: () => {
+        modalInput.focus();
+      },
+    },
+  }}
+  use:shortcut={{
+    trigger: {
+      key: "r",
+      modifier: ["alt"],
+      callback: () => {
+        tools.diceRoller = !tools.diceRoller;
+      },
+    },
+  }}
+/>
 
 <article>
   <div class="sidepanel">
@@ -191,8 +232,10 @@
     {/if}
     {#if tools.diceRoller}
       <div
-        class="modal small"
+        class="modal small resize"
         use:movable={{ handle, limit: { parent: "screen" } }}
+        use:resize
+        on:resized={onResized}
       >
         <span class="handle" bind:this={handle}>
           Dice Roller
@@ -219,14 +262,20 @@
               type="text"
               bind:value={roll}
               placeholder="insert roll, enter to submit"
+              bind:this={modalInput}
             />
             <input type="submit" value="roll" />
           </form>
           <p class="error">{rollError}</p>
-          <p>Roll syntax:</p>
-          <p>xdy(adv/dis a)(+/- b)</p>
-          <p>e.g. 1d10adv4+2</p>
-          <p>e.g. d14-2 (x is optional)</p>
+          {#if tools.diceTips}
+            <p>Roll syntax:</p>
+            <p><b>[x]</b>d<b>[y]</b><i>(adv/dis [a])(+/- [b])</i></p>
+            <p>e.g. 1d10adv4+2</p>
+            <p>e.g. d14-2 (x is optional)</p>
+            <p>large values may freeze your browser</p>
+            <p>ctrl+q focus roll input</p>
+            <p>alt+r to show hide roller</p>
+          {/if}
         </div>
       </div>
     {/if}

@@ -155,12 +155,13 @@ export class DiceRoller {
   }
 
   public roll(NAME, USER, ROLLTYPE, ROLL, COLOR) {
-    var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+    var expression =
+      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
     var regex = new RegExp(expression);
-    
+
     if (!this.webhook?.match(regex)) {
       return "invalid webhook";
-    } 
+    }
 
     const parse = this.rollParser(ROLL);
 
@@ -170,14 +171,16 @@ export class DiceRoller {
 
     const rolls = [];
     const color = COLOR ? COLOR : this.stringToColor(NAME + ROLLTYPE);
-    const username = USER ? USER + " Roller": "Gus Roller";
+    const username = USER ? USER + " Roller" : "Gus Roller";
     let x = 1;
     let type = "";
 
     if (typeof parse.adv === "object") {
-      
-      x = parse.adv.ord;
+      if (parse.adv.ord > 100) {
+        return "be reasonable";
+      }
 
+      x = parse.adv.ord;
       type = parse.adv.type;
     }
 
@@ -201,7 +204,10 @@ export class DiceRoller {
     // );
 
     const title = `${NAME} rolls ${ROLLTYPE}`;
-    const description = `\`\`\`${parse.roll}:\n${this.rollsToString(rolls, sums)}\n${final-parse.mod}${
+    const description = `\`\`\`${parse.roll}:\n${this.rollsToString(
+      rolls,
+      sums
+    )}\n${final - parse.mod}${
       parse.mod ? (parse.mod > 0 ? "+" + parse.mod : parse.mod) : ""
     } \`\`\`\n🎲 = **${final}**`;
 
@@ -227,6 +233,6 @@ export class DiceRoller {
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
 
-      return "";
+    return "";
   }
 }
