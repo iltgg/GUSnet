@@ -1,6 +1,7 @@
 export class DiceRoller {
   webhook: string;
   cutoff: number;
+  validWebhook: boolean;
 
   /*
   roll syntax:
@@ -14,6 +15,12 @@ export class DiceRoller {
   constructor(webhook: string, params?: { cutoff?: number }) {
     this.webhook = webhook;
     this.cutoff = params?.cutoff ? params?.cutoff : 10;
+
+    var expression =
+      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+    var regex = new RegExp(expression);
+
+    this.validWebhook = !!webhook?.match(regex);
   }
 
   // private rollDice(n: number, x: number) {
@@ -155,11 +162,7 @@ export class DiceRoller {
   }
 
   public roll(NAME, USER, ROLLTYPE, ROLL, COLOR) {
-    var expression =
-      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-    var regex = new RegExp(expression);
-
-    if (!this.webhook?.match(regex)) {
+    if (!this.validWebhook) {
       return "invalid webhook";
     }
 

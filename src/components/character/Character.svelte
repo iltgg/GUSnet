@@ -159,22 +159,29 @@
 
 <style lang="scss">
   .page-list {
-    position: relative;
-    left: 0.5em;
-    top: 0.5em;
+    position: sticky;
+    left: 0;
+    top: 0;
     width: fit-content;
     height: fit-content;
-    border-bottom: 2px solid var(--gutter-grey);
-    padding-bottom: 0.4rem;
-    // padding: 0.6rem;
-    // border-radius: 0.5rem;
+    // border-bottom: 2px solid var(--gutter-grey);
+    background-color: var(--gutter-grey);
+    opacity: 0.5;
+    // padding-bottom: 0.4rem;
+    padding: 0.4rem;
+    border-bottom-right-radius: 0.2em;
 
     display: flex;
     flex-direction: row;
     // background-color: var(--ui-one);
 
     z-index: 99;
-
+    
+    &:hover{
+      opacity: 1;
+      transition: all 0.05s ease-in-out;
+    }
+    
     button {
       // margin: 0 0 1em 0;
       margin: 0 1em 0 0;

@@ -105,6 +105,9 @@
       },
       backColor: "#0000",
     };
+
+    let accent = localStorage.getItem("accent") || "orange";
+    document.body.classList.add(accent);
   });
 
   function conditionsFailed(event) {

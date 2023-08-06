@@ -107,7 +107,7 @@ export async function updateCharacter(universeId, characterId, data) {
     universeId,
     "characters",
     characterId
-  );
+  ).withConverter(characterConverter);
 
   await updateDoc(characterDoc, data);
 }

@@ -52,12 +52,16 @@
     </div>
     <div class="two">
       <h2>News:</h2>
-      Release ALPHA.2:
+      Release ALPHA.3:
       <ul>
         <li>Report bugs to the nearest authority</li>
         <li>Fixed persistent characters when switching universes</li>
         <li>Added dice roller, requires discord webhook</li>
-        <li>Modifier bug still a problem</li>
+        <li>Modifier bug unreplicable</li>
+        <li>Improved dice roller UI</li>
+        <li>Added "game"</li>
+        <li>Added sheet "editor"</li>
+        <li>Added accent themes</li>
       </ul>
     </div>
   </div>

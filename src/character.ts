@@ -34,3 +34,7 @@ export const characterConverter = {
     };
   },
 };
+
+export function compressLayout(layout: object) {
+  return Bytes.fromUint8Array(compressToUint8Array(JSON.stringify(layout)));
+}
