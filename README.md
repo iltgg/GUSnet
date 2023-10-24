@@ -12,6 +12,14 @@ Svelte SPA + Firebase
 
 ## Screenshots:
 
+!(Home Screen)[https://github.com/iltgg/GUSnet/blob/master/screenshots/home0.png?raw=true]
+
+!(Universe Screen)[https://github.com/iltgg/GUSnet/blob/master/screenshots/universe0.png?raw=true]
+
+!(Character Screen 1)[https://github.com/iltgg/GUSnet/blob/master/screenshots/character0.png?raw=true]
+
+!(Character Screen 2)[https://github.com/iltgg/GUSnet/blob/master/screenshots/character1.png?raw=true]
+
 ## Features:
 
 - Uses Firebase to sync across devices and users
