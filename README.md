@@ -1,6 +1,6 @@
 # GUSnet
 
-**General Universe System Network**
+**General Universal System Network**
 
 _gus_ for short
 
